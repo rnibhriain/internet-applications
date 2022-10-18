@@ -1,0 +1,82 @@
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<div id="app">
+    <h1>Weather Packing App</h1>
+    Please enter the city you plan to go to:
+    <br>
+    City: <input v-model="city"> <br><br>
+    <button v-on:click="GetRand">Check Weather Advice</button>
+    <br>
+    <span v-if="history.length>0">
+    
+    <br> Ah the weather in {{city}}
+    <hr>
+    <h2>Packing</h2>
+    <ul>
+        <li v-if="temp[0] > 12 && temp[0] < 14" >Ooh its mild, maybe a light jacket</li>
+        <li v-else-if="temp[0] > 14" >Ooh its hot tshirt</li>
+        <li v-else >Brrr bring a coat</li>
+        <li v-if="air > 10" >Air quality isn't great pop on a mask</li>
+        <li v-if="rain===true" >Yikes bring an umbrella</li>
+    </ul>
+    <h2>Summary Table</h2>
+    <table border=1>
+  <tr>
+    <th></th>
+    <th>Day One</th>
+    <th>Day Two</th>
+    <th>Day Three</th>
+    <th>Day Four</th>
+  </tr>
+  <tr>
+    <th>Temperature</th>
+    <td v-for="current in Avgtemp">{{current}}</td>
+  </tr>
+  <tr>
+    <th>Wind Speed</th>
+    <td v-for="current in windspeed">{{current}}</td>
+  </tr>
+  <tr>
+    <th>Rainfall</th>
+    <td v-for="current in rainfall">{{current}}</td>
+  </tr>
+</table>
+    </span> 
+    </div>
+    
+    <script>
+    
+    var app = new Vue({
+        el:'#app',
+        data:{
+            umbrella: false,
+            randMin: 1,
+            randMax: 10,
+            city: "dublin",
+            temp: [],
+            air: 0,
+            rain: false,
+            rainfall: [],
+            windspeed: [],
+            Avgtemp: [],
+            history :[]},
+            
+        methods:{
+            GetRand : getRandom }
+    })
+    function getRandom (){
+        console.log("getRandom called")
+        let prom = fetch("random/"+this.randMin+"/"+this.randMax+"/"+this.city)
+        prom.then( response => response.json())
+        .then (response =>
+        { this.random = response.result
+            this.temp = response.temp
+            this.history.push(response.temp)
+            this.air = response.air
+            this.rain = response.rain
+            this.rainfall = [...response.rainfall]
+            this.windspeed = [...response.windspeed]
+            this.Avgtemp = [...response.Avgtemp]
+    })}
+    </script>
+    
