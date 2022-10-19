@@ -61,8 +61,7 @@ function returnAvgTemp (forecast) {
             }
             
         }
-        console.log(average/6);
-        temp.push(average/6);
+        temp.push((average/6).toFixed(2));
     }
 
     return temp;
@@ -83,8 +82,7 @@ function returnWindspeed (forecast) {
             }
             
         }
-        console.log(average/6);
-        windspeed.push(average/6);
+        windspeed.push((average/6).toFixed(2));
     }
 
     return windspeed;
@@ -106,8 +104,7 @@ function returnRainfall (forecast) {
             }
             
         }
-        console.log(average/6);
-        rainfall.push(average/6);
+        rainfall.push((average/6).toFixed(2));
     }
 
     return rainfall;

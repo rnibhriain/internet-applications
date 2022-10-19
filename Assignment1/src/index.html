@@ -1,8 +1,8 @@
 <!-- development version, includes helpful console warnings -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <div id="app">
-    <h1>Weather Packing App</h1>
-    Please enter the city you plan to go to:
+    <h1 style="color:#bb6c04">Weather Packing App</h1>
+      Please enter the city you plan to go to:
     <br>
     City: <input v-model="city"> <br><br>
     <button v-on:click="GetRand">Check Weather Advice</button>
@@ -15,30 +15,31 @@
     <ul>
         <li v-if="temp[0] > 12 && temp[0] < 14" >Ooh its mild, maybe a light jacket</li>
         <li v-else-if="temp[0] > 14" >Ooh its hot tshirt</li>
-        <li v-else >Brrr bring a coat</li>
+        <li v-else>Brrr bring a coat</li>
         <li v-if="air > 10" >Air quality isn't great pop on a mask</li>
         <li v-if="rain===true" >Yikes bring an umbrella</li>
     </ul>
+    <hr>
     <h2>Summary Table</h2>
-    <table border=1>
-  <tr>
-    <th></th>
-    <th>Day One</th>
-    <th>Day Two</th>
-    <th>Day Three</th>
-    <th>Day Four</th>
-  </tr>
+      <table border=4>
+        <tr>
+          <th></th>
+        <th>Day One</th>
+        <th>Day Two</th>
+        <th>Day Three</th>
+        <th>Day Four</th>
+        </tr>
   <tr>
     <th>Temperature</th>
-    <td v-for="current in Avgtemp">{{current}}</td>
+    <td v-for="current in Avgtemp">{{current}}c</td>
   </tr>
   <tr>
     <th>Wind Speed</th>
-    <td v-for="current in windspeed">{{current}}</td>
+    <td v-for="current in windspeed">{{current}}km/h</td>
   </tr>
   <tr>
     <th>Rainfall</th>
-    <td v-for="current in rainfall">{{current}}</td>
+    <td v-for="current in rainfall">{{current}}mm</td>
   </tr>
 </table>
     </span> 
@@ -79,4 +80,16 @@
             this.Avgtemp = [...response.Avgtemp]
     })}
     </script>
-    
+<style>       
+    hr{
+        height: 1px;
+        background-color: rgb(226, 145, 24);
+        border: none;
+    }
+    button{
+        background-color: rgb(226, 145, 24);
+    }
+    table{
+        border-color: rgb(226, 139, 9);
+    }
+</style>
