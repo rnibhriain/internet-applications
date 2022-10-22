@@ -1,11 +1,13 @@
 <!-- development version, includes helpful console warnings -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <div id="app">
+
     <h1 style="color:#bb6c04">Weather Packing App</h1>
       Please enter the city you plan to go to:
     <br>
+
     City: <input v-model="city"> <br><br>
-    <button v-on:click="GetRand">Check Weather Advice</button>
+    <button v-on:click="GetData">Check Weather Advice</button>
     <br>
     <span v-if="history.length>0">
     
@@ -13,8 +15,8 @@
     <hr>
     <h2>Packing</h2>
     <ul>
-        <li v-if="temp[0] > 12 && temp[0] < 14" >Ooh its mild, maybe a light jacket</li>
-        <li v-else-if="temp[0] > 14" >Ooh its hot tshirt</li>
+        <li v-if="temp > 12 && temp < 24" >Ooh its mild, maybe a light jacket</li>
+        <li v-else-if="temp > 24" >Ooh its hot tshirt</li>
         <li v-else>Brrr bring a coat</li>
         <li v-if="air > 10" >Air quality isn't great pop on a mask</li>
         <li v-if="rain===true" >Yikes bring an umbrella</li>
@@ -24,12 +26,12 @@
       <table border=4>
         <tr>
           <th></th>
-        <th>Day One</th>
-        <th>Day Two</th>
-        <th>Day Three</th>
-        <th>Day Four</th>
-        </tr>
-  <tr>
+            <th>Day One</th>
+            <th>Day Two</th>
+            <th>Day Three</th>
+            <th>Day Four</th>
+          </tr>
+        <tr>
     <th>Temperature</th>
     <td v-for="current in Avgtemp">{{current}}c</td>
   </tr>
@@ -42,6 +44,15 @@
     <td v-for="current in rainfall">{{current}}mm</td>
   </tr>
 </table>
+  <hr>
+  <h2>Fun Facts</h2>
+  <ul>
+    <li v-if="population > 0">The population of {{city}} is: {{population}}</li>
+    <li v-if="capital && country != ''">{{city}} is the capital of {{country}}</li>
+    <li v-if="!capital && country !=''">{{city}} is not the capital of {{country}}</li>
+    <p>Another random fun fact: <br> </p>
+    <li v-if="fact != ''">{{fact}}</li>
+  </ul>
     </span> 
     </div>
     
@@ -51,26 +62,27 @@
         el:'#app',
         data:{
             umbrella: false,
-            randMin: 1,
-            randMax: 10,
             city: "dublin",
-            temp: [],
+            temp: 0,
             air: 0,
+            population: 0,
             rain: false,
+            fact: "",
+            country: "",
+            capital: false,
             rainfall: [],
             windspeed: [],
             Avgtemp: [],
             history :[]},
             
         methods:{
-            GetRand : getRandom }
+            GetData : getData }
     })
-    function getRandom (){
-        console.log("getRandom called")
-        let prom = fetch("random/"+this.randMin+"/"+this.randMax+"/"+this.city)
+    function getData (){
+        let prom = fetch("data/"+this.city)
         prom.then( response => response.json())
         .then (response =>
-        { this.random = response.result
+        {
             this.temp = response.temp
             this.history.push(response.temp)
             this.air = response.air
@@ -78,7 +90,13 @@
             this.rainfall = [...response.rainfall]
             this.windspeed = [...response.windspeed]
             this.Avgtemp = [...response.Avgtemp]
-    })}
+            this.population = response.population
+            this.fact = response.fact
+            this.country = response.country
+            this.capital = response.capital
+            
+    })
+    console.log(response.population);}
     </script>
 <style>       
     hr{
