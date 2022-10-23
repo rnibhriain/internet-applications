@@ -8,20 +8,26 @@
 
     City: <input v-model="city"> <br><br>
     <button v-on:click="GetData">Check Weather Advice</button>
+    <button v-if="isDarkMode===false" v-on:click="darkMode();">Dark Mode</button>
+    <button v-if="isDarkMode===true" v-on:click="lightMode();">Light Mode</button>
     <br>
     <span v-if="history.length>0">
     
     <br> Ah the weather in {{city}}
+
     <hr>
+
     <h2>Packing</h2>
-    <ul>
+      <ul>
         <li v-if="temp > 12 && temp < 24" >Ooh its mild, maybe a light jacket</li>
         <li v-else-if="temp > 24" >Ooh its hot tshirt</li>
         <li v-else>Brrr bring a coat</li>
         <li v-if="air > 10" >Air quality isn't great pop on a mask</li>
         <li v-if="rain===true" >Yikes bring an umbrella</li>
-    </ul>
+      </ul>
+
     <hr>
+
     <h2>Summary Table</h2>
       <table border=4>
         <tr>
@@ -32,31 +38,33 @@
             <th>Day Four</th>
           </tr>
         <tr>
-    <th>Temperature</th>
-    <td v-for="current in Avgtemp">{{current}}c</td>
-  </tr>
-  <tr>
-    <th>Wind Speed</th>
-    <td v-for="current in windspeed">{{current}}km/h</td>
-  </tr>
-  <tr>
-    <th>Rainfall</th>
-    <td v-for="current in rainfall">{{current}}mm</td>
-  </tr>
-</table>
-  <hr>
-  <h2>Fun Facts</h2>
-  <ul>
-    <li v-if="population > 0">The population of {{city}} is: {{population}}</li>
-    <li v-if="capital && country != ''">{{city}} is the capital of {{country}}</li>
-    <li v-if="!capital && country !=''">{{city}} is not the capital of {{country}}</li>
-    <p>Another random fun fact: <br> </p>
-    <li v-if="fact != ''">{{fact}}</li>
-  </ul>
+          <th>Temperature</th>
+            <td v-for="current in Avgtemp">{{current}}°C</td>
+        </tr>
+        <tr>
+          <th>Wind Speed</th>
+            <td v-for="current in windspeed">{{current}}km/h</td>
+        </tr>
+        <tr>
+          <th>Rainfall</th>
+            <td v-for="current in rainfall">{{current}}mm</td>
+        </tr>
+      </table>
+
+    <hr>
+
+    <h2>Fun Facts</h2>
+    <ul>
+      <li v-if="population > 0">The population of {{city}} is: {{population}}</li>
+      <li v-if="capital && country != ''">{{city}} is the capital of {{country}}</li>
+      <li v-if="!capital && country !=''">{{city}} is not the capital of {{country}}</li>
+      <p>Another random fun fact: <br> </p>
+      <li v-if="fact != ''">{{fact}}</li>
+    </ul>
     </span> 
-    </div>
+</div>
     
-    <script>
+  <script>
     
     var app = new Vue({
         el:'#app',
@@ -65,6 +73,7 @@
             city: "dublin",
             temp: 0,
             air: 0,
+            isDarkMode: false,
             population: 0,
             rain: false,
             fact: "",
@@ -73,11 +82,22 @@
             rainfall: [],
             windspeed: [],
             Avgtemp: [],
-            history :[]},
-            
+            history :[]},  
         methods:{
-            GetData : getData }
+            GetData : getData,
+            darkMode: darkMode,
+            lightMode: lightMode }
     })
+    function darkMode() {
+      document.body.style.background = "black";
+      document.body.style.color = 'white';
+      this.isDarkMode = true;
+    }
+    function lightMode() {
+      document.body.style.background = "white";
+      document.body.style.color = 'black';
+      this.isDarkMode = false;
+    }
     function getData (){
         let prom = fetch("data/"+this.city)
         prom.then( response => response.json())
@@ -95,9 +115,8 @@
             this.country = response.country
             this.capital = response.capital
             
-    })
-    console.log(response.population);}
-    </script>
+    })}
+  </script>
 <style>       
     hr{
         height: 1px;
