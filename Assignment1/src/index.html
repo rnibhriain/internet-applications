@@ -22,7 +22,7 @@
         <li v-if="temp > 12 && temp < 24" >Ooh its mild, maybe a light jacket</li>
         <li v-else-if="temp > 24" >Ooh its hot tshirt</li>
         <li v-else>Brrr bring a coat</li>
-        <li v-if="air > 10" >Air quality isn't great pop on a mask</li>
+        <li v-if="air === true" >Air quality isn't great pop on a mask</li>
         <li v-if="rain===true" >Yikes bring an umbrella</li>
       </ul>
 
@@ -72,7 +72,7 @@
             umbrella: false,
             city: "dublin",
             temp: 0,
-            air: 0,
+            air: false,
             isDarkMode: false,
             population: 0,
             rain: false,

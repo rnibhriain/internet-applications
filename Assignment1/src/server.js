@@ -22,9 +22,9 @@ const sendData = async (req, res) => {
     let lon = result.coord.lon;
 
     // get air quality
-    let quality = await fetch('http://api.openweathermap.org/data/2.5/air_pollution?lat='+ lat+'&lon='+lon+'&appid=' + apiKey);
+    let quality = await fetch('http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat='+ lat+'&lon='+lon+'&appid=' + apiKey);
     const myJson = await quality.json();
-    let air = myJson.list[0].components.pm2_5;
+    let air = airQuality(myJson);
 
     let forecast = await getForecast(city);
     let rain = checkForRain(forecast);
@@ -62,6 +62,16 @@ const sendData = async (req, res) => {
         console.log(err);
     });
     
+}
+
+// returns true if any air pollution is bad
+function airQuality (forecast) {
+    for (var i in forecast.list) { 
+        if (forecast.list[i].components.pm2_5 > 10) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // returns data for summary table and the avg temperature
